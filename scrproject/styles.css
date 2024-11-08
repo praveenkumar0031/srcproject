@@ -1,0 +1,125 @@
+* {
+    box-sizing: border-box; /* Ensures padding and borders are included in width/height calculations */
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    width: 100%; /* Ensures the body takes full width */
+    height: 100%; /* Ensures the body takes full height */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.5; /* Adjusted for better readability */
+    background-image: url("wallpaperflare.com_wallpaper.jpg");
+    background-repeat: no-repeat;
+    background-position: center; /* Center the image */
+    background-size: cover; /* Make the image cover the entire page */
+    color: #fff;
+}
+
+nav {
+    display: flex; /* Use flexbox for the navigation */
+    justify-content: flex-end; /* Align items to the end (right) */
+    height:45px;
+
+}
+.img{
+    margin-right: 720px;
+    width: 45px;
+    height:30px;
+}
+nav ul {
+    list-style-type: none;
+    padding:10px;
+    display: flex; /* Flex display for the list */
+}
+
+nav ul li {
+    position: relative;
+    display: inline-block;
+    margin: 0 15px; /* Margin for spacing */
+}
+
+nav ul li a {
+    color: #fff; /* Text color */
+    text-decoration: none;
+    padding: 10px; /* Adjusted padding */
+    transition: background 0.3s;
+}
+
+.dropdown-content {
+    display: none; /* Hidden by default */
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.9); /* White with transparency */
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.dropdown-content a {
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    color: #333; /* Change text color for dropdown */
+}
+
+nav ul li:hover .dropdown-content {
+    display: block; /* Show dropdown on hover */
+}
+
+nav ul li a:hover {
+    background: rgba(85, 85, 85, 0.8);
+}
+
+header {
+    background: rgba(51, 51, 51, 0.8);
+    color: #fff;
+    padding: 10px 0;
+}
+footer {
+    background-color: #333; /* Dark background */
+    color: white;           /* Text color */
+    padding: 20px 0;       /* Padding */
+    text-align: center;     /* Centered text */
+    position: absolute;     /* Positioned relative for any absolute children */
+    bottom: 0;              /* Stick to the bottom */
+    width: 100%;           /* Full width */
+}
+
+.container {
+    max-width: 1200px;    /* Max width for content */
+    margin: 0 auto;       /* Centering the container */
+    padding: 0 15px;      /* Padding on sides */
+}
+
+.social-links {
+    list-style: none;      /* Remove bullets */
+    padding: 0;           /* Remove padding */
+    margin: 10px 0 0;     /* Margin on top */
+}
+
+.social-links li {
+    display: inline;       /* Display links inline */
+    margin: 0 10px;       /* Space between links */
+}
+
+.social-links a {
+    color: white;          /* Link color */
+    text-decoration: none;  /* Remove underline */
+}
+
+.social-links a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+video {
+    width: 100%;
+    height: auto;
+    border: 1px solid black;
+}
+
+
+
+

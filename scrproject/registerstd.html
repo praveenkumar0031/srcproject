@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="log.css">
+        <link rel="stylesheet" href="styles.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
+        <title>Register_Students</title>
+    </head>
+    <body>
+        <header>
+            <nav id="n">
+                <ul>
+                    <img class="img" src="logo.ico">
+                    <li><a href="techspecs.html">Home</a></li>
+                    <li>
+                        <a href="#" class="dropdown-toggle">Login</a>
+                        <div class="dropdown-content">
+                            <a href="loginstd.html">Student</a>
+                            <a href="/loginad.html">Staff</a>
+                
+                        </div>
+                    </li>
+                    <li><a href="att.html">Attendance Management</a></li>
+                    <li><a href="rep.html">Resource Management</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+        </header>
+    <div class="box">
+            <img class="logo" width="100px"; height="100px" src="icon.png" >
+    <div class="outerbox">
+        <div class="login-box">
+            <h1>Student-Register </h1>
+            <div class="inbox">
+                <ion-icon name="person-circle-outline"></ion-icon>
+                <input id="user" type="text"required>
+                <label for="">Student-Name</label>
+            </div>
+            <div class="inbox">
+                <ion-icon name="email-outline"></ion-icon>
+                <input id="email" type="email"required>
+                <label for="">Student E-mail</label>
+            </div>
+            <div class="inbox">
+                <ion-icon name="eye-outline"></ion-icon>
+                <input id="pass" type="password" required>
+                <label for="">Password</label>
+            </div>
+            <button  id="reg" >Sign-In</button>
+            <div class="signin">
+                <p>already have an account <a href="loginstd.html">Login</a></p>
+            </div>
+        </div>
+    </div>
+    </div>
+
+   
+        <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+        <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+        <script type="module">
+    
+            // Import the functions you need from the SDKs you need
+            import { initializeApp } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-app.js";
+            import {getDatabase} from "https://www.gstatic.com/firebasejs/10.10.0/firebase-database.js";
+            import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.10.0/firebase-auth.js";
+           
+            
+          
+            // Your web app's Firebase configuration
+            const firebaseConfig = {
+              apiKey: "AIzaSyAuU12aOx4Mq-lhv4AMOvM7fQNgu-4wHmM",
+              authDomain: "projectsem2-d4e74.firebaseapp.com",
+              databaseURL: "https://projectsem2-d4e74-default-rtdb.asia-southeast1.firebasedatabase.app",
+              projectId: "projectsem2-d4e74",
+              storageBucket: "projectsem2-d4e74.appspot.com",
+              messagingSenderId: "949271067903",
+              appId: "1:949271067903:web:5fa1f4453cb9e44ade60ca"
+            };
+          
+            // Initialize Firebase
+            const app = initializeApp(firebaseConfig);
+            const db =getDatabase(app);
+            const auth = getAuth();
+         
+          
+         
+         
+         reg.addEventListener('click',(e) =>{
+            var user=document.getElementById('user').value;
+          var email=document.getElementById('email').value;
+          var pass=document.getElementById('pass').value;
+             createUserWithEmailAndPassword(auth, email, pass)
+             .then((userCredential) => {
+               // Signed up 
+               const user = userCredential.user;
+               alert('user created!');
+               window.open('loginad.html','_self');
+              
+             })
+             .catch((error) => {
+               const errorCode = error.code;
+               const errorMessage = error.message;
+               
+               alert(errorMessage);
+             
+             });
+         });
+         
+         </script>
+         <footer>
+            <p>&copy;TechSpecs</p>
+        </footer>
+        
+    </body>
+</html>
