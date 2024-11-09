@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hackathon Project</title>
+    <style>
+        /* Your existing styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        p {
+            color: #666;
+        }
+
+        .button-container {
+            display: inline-block;
+            vertical-align: top;
+            margin: 10px;
+        }
+
+        button {
+            display: block;
+            font-size: 16px;
+            width: 155px;
+            height: 180px;
+            background-color: #ff4b4b;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 10px;
+            line-height: 1.2;
+            white-space: normal;
+        }
+
+        button:hover {
+            background-color: #d63a3a;
+        }
+
+        button:active {
+            background-color: #b82e2e;
+        }
+
+        .success-message {
+            margin-top: 10px;
+            color: green;
+            font-size: 16px;
+            display: none;
+            vertical-align: middle;
+        }
+    </style>
+</head>
+<body>
+    <h1>Safety and Security Alerts</h1>
+    <p>Click the buttons to send alerts.</p>
+
+    <div class="button-container">
+        <button id="fireAlarm">Fire Alarm</button>
+        <p id="fireMessage" class="success-message">Button is successfully clicked!</p>
+    </div>
+
+    <div class="button-container">
+        <button id="medicalEmergency">Medical Alarm</button>
+        <p id="medicalMessage" class="success-message">Button is successfully clicked!</p>
+    </div>
+
+    <script>
+        let userLocation = '';
+
+        // Function to get user's location
+        function getUserLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(position => {
+                    const { latitude, longitude } = position.coords;
+                    userLocation = `Latitude: ${latitude}, Longitude: ${longitude}`;
+                }, error => {
+                    console.error("Error getting location: ", error);
+                    alert("Unable to retrieve your location.");
+                });
+            } else {
+                alert("Geolocation is not supported by this browser.");
+            }
+        }
+
+        getUserLocation(); // Call the function to get the location
+
+        document.getElementById('fireAlarm').addEventListener('click', () => {
+            fetch('/fire-alarm', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ location: userLocation }) // Send location with the request
+            })
+            .then(() => {
+                document.getElementById('fireMessage').style.display = 'inline'; // Show the message inline
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.getElementById('medicalEmergency').addEventListener('click', () => {
+            fetch('/medical-emergency', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ location: userLocation }) // Send location with the request
+            })
+            .then(() => {
+                document.getElementById('medicalMessage').style.display = 'inline'; // Show the message inline
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
