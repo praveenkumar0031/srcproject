@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Learning Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #6A0DAD;
+            color: #fff;
+            font-size: 18px;
+        }
+        .container {
+            background: #fff;
+            color: #4B0082;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 800px;
+            transition: opacity 0.5s ease-in-out;
+            display: none;
+        }
+        h1, h2 {
+            color: #FFA500;
+            margin-bottom: 20px;
+        }
+        .button {
+            background: #FF4500;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            margin: 10px;
+            transition: background 0.3s;
+        }
+        .button:hover {
+            background: #e03c00;
+        }
+        .input-field {
+            padding: 10px;
+            font-size: 18px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 80%;
+            margin: 10px 0;
+        }
+        .options button {
+            background: #9370DB;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 80%;
+            margin: 5px auto;
+            transition: background 0.3s;
+        }
+        .options button:hover {
+            background: #8A2BE2;
+        }
+        .feedback {
+            font-size: 18px;
+            margin-top: 10px;
+            font-weight: bold;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        .correct {
+            color: #32CD32; /* Green for correct */
+        }
+        .incorrect {
+            color: #FF6347; /* Red for incorrect */
+        }
+        .score-display {
+            font-size: 20px;
+            margin-top: 20px;
+            color: #4B0082;
+            font-weight: bold;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .confetti {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Welcome Page -->
+<div id="welcome-page" class="container">
+    <h1>Welcome to the Interactive Quiz Platform!</h1>
+    <p>Enter your name to start:</p>
+    <input type="text" id="username" class="input-field" placeholder="Your Name">
+    <button class="button" onclick="startQuiz()">Start Quiz</button>
+</div>
+
+<!-- Quiz Type Selection Page -->
+<div id="quiz-type-page" class="container">
+    <h2>Select Quiz Type</h2>
+    <button class="button" onclick="selectQuizType('maths')">Math Quiz</button>
+    <button class="button" onclick="selectQuizType('science')">Science Quiz</button>
+    <button class="button" onclick="selectQuizType('history')">History Quiz</button>
+    <button class="button" onclick="selectQuizType('puzzles')">Puzzles</button>
+</div>
+
+<!-- Quiz Questions Page -->
+<div id="quiz-page" class="container">
+    <h2 id="quiz-title">Quiz</h2>
+    <div id="question" class="question">Question text will appear here</div>
+    <div class="options">
+        <button onclick="checkAnswer(0)">Option 1</button>
+        <button onclick="checkAnswer(1)">Option 2</button>
+        <button onclick="checkAnswer(2)">Option 3</button>
+        <button onclick="checkAnswer(3)">Option 4</button>
+    </div>
+    <div id="feedback" class="feedback"></div>
+    <div id="score-display" class="score-display"></div>
+</div>
+
+<!-- Results Page -->
+<div id="results-page" class="container">
+    <h2>Quiz Completed!</h2>
+    <p id="final-score">Your final score is:</p>
+    <button class="button" onclick="resetQuiz()">Return to Home</button>
+</div>
+
+<!-- Confetti Animation -->
+<div id="confetti" class="confetti"></div>
+
+<script>
+    let username = "";
+    let currentQuiz = [];
+    let currentQuestion = 0;
+    let score = 0;
+
+    const quizData = {
+        maths: [
+            { question: "What is 7 + 8?", options: ["15", "16", "14", "13"], correct: 0 },
+            { question: "Square root of 64?", options: ["6", "8", "10", "12"], correct: 1 },
+            { question: "What is 25 x 4?", options: ["100", "125", "75", "110"], correct: 0 },
+            { question: "What is 18 / 3?", options: ["6", "5", "7", "4"], correct: 0 }
+        ],
+        science: [
+            { question: "What planet is known as the Red Planet?", options: ["Earth", "Mars", "Jupiter", "Saturn"], correct: 1 },
+            { question: "What is H2O?", options: ["Oxygen", "Water", "Helium", "Hydrogen"], correct: 1 },
+            { question: "What is the chemical symbol for Gold?", options: ["Au", "Ag", "Pb", "Fe"], correct: 0 },
+            { question: "Which gas do plants absorb?", options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"], correct: 1 }
+        ],
+        history: [
+            { question: "Who discovered America?", options: ["Columbus", "Vasco da Gama", "Magellan", "Marco Polo"], correct: 0 },
+            { question: "First man on the moon?", options: ["Buzz Aldrin", "Neil Armstrong", "Yuri Gagarin", "John Glenn"], correct: 1 },
+            { question: "When did World War II end?", options: ["1945", "1939", "1965", "1918"], correct: 0 },
+            { question: "Who was the first President of the USA?", options: ["Abraham Lincoln", "George Washington", "Thomas Jefferson", "John Adams"], correct: 1 }
+        ],
+        puzzles: [
+            { question: "I am an odd number. Take away one letter, and I become even.", options: ["Seven", "Five", "Nine", "Eleven"], correct: 0 },
+            { question: "I speak without a mouth. What am I?", options: ["Shadow", "Echo", "Wind", "Clock"], correct: 1 },
+            { question: "The more you take, the more you leave behind. What am I?", options: ["Footsteps", "Sand", "Air", "Time"], correct: 0 },
+            { question: "What comes once in a minute, twice in a moment, but never in a thousand years?", options: ["The letter M", "A second", "A blink", "An hour"], correct: 0 }
+        ]
+    };
+
+    function startQuiz() {
+        username = document.getElementById("username").value.trim();
+        if (username) {
+            showPage("quiz-type-page");
+        } else {
+            alert("Please enter your name to continue.");
+        }
+    }
+
+    function selectQuizType(type) {
+        currentQuiz = quizData[type];
+        currentQuestion = 0;
+        score = 0;
+        showPage("quiz-page");
+        loadQuestion();
+    }
+
+    function loadQuestion() {
+        const questionData = currentQuiz[currentQuestion];
+        document.getElementById("quiz-title").textContent = `Hello, ${username}! Question ${currentQuestion + 1}`;
+        document.getElementById("question").textContent = questionData.question;
+        const options = document.querySelectorAll(".options button");
+        options.forEach((button, index) => {
+            button.textContent = questionData.options[index];
+        });
+        document.getElementById("feedback").textContent = "";
+        document.getElementById("score-display").textContent = `Score: ${score}`;
+    }
+
+    function checkAnswer(selectedIndex) {
+        const isCorrect = selectedIndex === currentQuiz[currentQuestion].correct;
+        const feedbackElement = document.getElementById("feedback");
+        feedbackElement.textContent = isCorrect ? "✅ Correct!" : "❌ Wrong!";
+        feedbackElement.className = isCorrect ? "feedback correct" : "feedback incorrect";
+        
+        if (isCorrect) score++;
+        document.getElementById("score-display").textContent = `Score: ${score}`;
+        currentQuestion++;
+        
+        setTimeout(() => {
+            if (currentQuestion < currentQuiz.length) loadQuestion();
+            else showResults();
+        }, 1000);
+    }
+
+    function showResults() {
+        document.getElementById("final-score").textContent = `Well done, ${username}! Your final score is: ${score}`;
+        triggerConfetti();
+        showPage("results-page");
+    }
+
+    function resetQuiz() {
+        document.getElementById("username").value = "";
+        showPage("welcome-page");
+    }
+
+    function showPage(pageId) {
+        document.querySelectorAll(".container").forEach(page => {
+            page.style.display = "none";
+        });
+        document.getElementById(pageId).style.display = "block";
+    }
+
+    function triggerConfetti() {
+        const confetti = document.getElementById("confetti");
+        confetti.style.display = "block";
+        // Adding simple CSS animation for confetti effect (you can use more advanced animations here)
+        confetti.innerHTML = '<div class="confetti-piece" style="animation: fall 3s infinite;"></div><div class="confetti-piece" style="animation: fall 3s infinite;"></div>';
+    }
+
+    showPage("welcome-page");
+</script>
+
+</body>
+</html>
